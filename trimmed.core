@@ -1,0 +1,65 @@
+module 'trimmed' ['module_info'/0,
+		  'module_info'/1,
+		  'start'/0]
+    attributes [%% Line 1
+		'file' =
+		    %% Line 1
+		    [{[116|[114|[105|[109|[109|[101|[100|[46|[101|[114|[108]]]]]]]]]]],1}]]
+'child'/1 =
+    %% Line 5
+    fun (_0) ->
+	let <_1> =
+	    call %% Line 6
+		 'erlang':%% Line 6
+			  'self'
+		()
+	in  do  %% Line 6
+		call 'erlang':'!'
+		    (_0, {'child_alive',_1})
+		%% Line 7
+		receive
+		  %% Line 8
+		  <'ack'> when 'true' ->
+		      %% Line 9
+		      'ok'
+		after 'infinity' ->
+		  'true'
+'start'/0 =
+    %% Line 12
+    fun () ->
+	let <Self> =
+	    call %% Line 13
+		 'erlang':%% Line 13
+			  'self'
+		()
+	in  let <_1> =
+		fun () ->
+		    %% Line 14
+		    apply 'child'/1
+			(Self)
+	    in  let <ChildPid> =
+		    call %% Line 14
+			 'erlang':%% Line 14
+				  'spawn'
+			(_1)
+		in  %% Line 15
+		    receive
+		      %% Line 16
+		      <{'child_alive',_3}>
+			  when call 'erlang':'=:='
+				(_3,
+				 ChildPid) ->
+			  %% Line 17
+			  call 'erlang':'send'
+			      (ChildPid, 'ack')
+		    after 'infinity' ->
+		      'true'
+'module_info'/0 =
+    fun () ->
+	call 'erlang':'get_module_info'
+	    ('trimmed')
+'module_info'/1 =
+    fun (_0) ->
+	call 'erlang':'get_module_info'
+	    ('trimmed', _0)
+end
